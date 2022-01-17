@@ -9,13 +9,23 @@ func Sum(vals []int) int {
 }
 
 func SumAll(numbersToSum ...[]int) (sums []int) {
-
-	for _, intSlice := range numbersToSum {
-		sum := 0
-		for _, val := range intSlice {
-			sum += val
-		}
-		sums = append(sums, sum)
+	for _, numberSlice := range numbersToSum {
+		sums = append(sums, Sum(numberSlice))
 	}
+
 	return sums
+}
+
+func SumAllTails(numbersToSumTails ...[]int) (tailSums []int) {
+	for _, numberSlice := range numbersToSumTails {
+		if len(numberSlice) == 0 {
+			// Handle an empty slice
+			tailSums = append(tailSums, 0)
+		} else {
+			// Create the tail values to sum by excluding the first element of the slice
+			tailValues := numberSlice[1:]
+			tailSums = append(tailSums, Sum(tailValues))
+		}
+	}
+	return tailSums
 }
