@@ -19,26 +19,24 @@ func TestPerimieter(t *testing.T) {
 }
 
 func TestArea(t *testing.T) {
-	// Create helper interface to allow for a Shape to be passed in
-	// This should either be a Rectangle or Circle type and error on any other.
-	checkArea := func(t testing.TB, shape Shape, want float64) {
-		t.Helper()
-		got := shape.Area()
-		if got != want {
-			t.Errorf("got: %g | want %g", got, want)
-		}
+
+	// Use an anonymous struct to perform table-driven tests.
+	// This allows a developer to add a new type with an Area()
+	// function and be able to easily add the type to the test.
+	// This strategy also permits the easy addition of extra Area() test
+	// cases as needed.
+	areaTests := []struct {
+		shape Shape
+		want  float64
+	}{
+		{Rectangle{6, 8}, 48.0},
+		{Circle{8}, 201.06192982974676},
 	}
 
-	t.Run("rectangles", func(t *testing.T) {
-		rect := Rectangle{6.0, 8.0}
-		want := 48.0
-		checkArea(t, rect, want)
-	})
-
-	t.Run("circles", func(t *testing.T) {
-		circ := Circle{8.0}
-		want := 201.06192982974676
-		checkArea(t, circ, want)
-	})
-
+	for _, testItem := range areaTests {
+		got := testItem.shape.Area()
+		if testItem.want != got {
+			t.Errorf("got: %g | want %g", got, testItem.want)
+		}
+	}
 }
