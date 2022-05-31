@@ -26,18 +26,22 @@ func TestArea(t *testing.T) {
 	// This strategy also permits the easy addition of extra Area() test
 	// cases as needed.
 	areaTests := []struct {
-		shape Shape
-		want  float64
+		name    string
+		shape   Shape
+		hasArea float64
 	}{
-		{shape: Rectangle{Width: 6, Height: 8}, want: 48.0},
-		{shape: Circle{Radius: 8}, want: 201.06192982974676},
-		{shape: Triangle{Base: 9, Height: 3}, want: 13.5},
+		{name: "Rectangle Area Test", shape: Rectangle{Width: 6, Height: 8}, hasArea: 48.0},
+		{name: "Circle Area Test", shape: Circle{Radius: 8}, hasArea: 201.06192982974676},
+		{name: "Right-Triangle Area Test", shape: Triangle{Base: 9, Height: 3}, hasArea: 13.5},
 	}
 
 	for _, testItem := range areaTests {
-		got := testItem.shape.Area()
-		if testItem.want != got {
-			t.Errorf("got: %g | want %g", got, testItem.want)
-		}
+		// Use the name field of the anonymous struct as the name of the test.
+		t.Run(testItem.name, func(t *testing.T) {
+			got := testItem.shape.Area()
+			if testItem.hasArea != got {
+				t.Errorf("%#v got: %g | has area: %g", testItem.shape, got, testItem.hasArea)
+			}
+		})
 	}
 }
